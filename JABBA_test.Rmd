@@ -1,0 +1,152 @@
+---
+title: "Production model in JABBA"
+author: "Kohei Hamabe"
+date: "2021/8/5"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(JABBA)
+dat <- readRDS("data/pol.rds")
+output.dir <- "C:/Users/00007920/Desktop/GitHub_repository/PMsoftware"
+```
+
+
+# Example 1. Albacore
+
+## とりあえず解析
+
+### データの整理
+
+```{r}
+
+dat_albacore <- list(
+  cpue = data.frame(Year = dat$albacore$timeI,
+                    CPUE = dat$albacore$obsI),
+  se = data.frame(Year = dat$albacore$timeI,
+                  CPUE = rep(NA, length(dat$albacore$timeI))),
+  catch = data.frame(Year = dat$albacore$timeC,
+                     catch = dat$albacore$obsC)
+  )
+
+```
+
+
+### 設定
+
+```{r}
+
+jbinput_albacore1 <-  build_jabba(
+  catch = dat_albacore$catch,
+  cpue = dat_albacore$cpue,
+  se = dat_albacore$se,
+  assessment="test_albacore",
+  scenario = "TestRun",
+  model.type = "Schaefer",
+  add.catch.CV = FALSE,
+  # prior sets
+  r.dist = "lnorm",
+  r.prior = c(0.5,10),
+  K.dist = "lnorm",
+  K.prior = c(10000, 10),
+  psi.dist = "beta",
+  psi.prior = c(0.05,0.9),
+  # variance sets
+  sigma.est = FALSE, # additional observation variance
+  fixed.obsE = 0.)
+
+```
+
+
+### MCMCの実行
+
+
+```{r}
+
+fit_albacore1 <- fit_jabba(jbinput_albacore1, quickmcmc=TRUE)
+fit_albacore1$estimates
+
+```
+
+
+
+### 結果の出力
+
+
+```{r}
+
+jbplot_catcherror(fit_albacore1)
+jbplot_ppdist(fit_albacore1)
+jbplot_cpuefits(fit_albacore1)
+jbplot_logfits(fit_albacore1)
+
+par(mfrow=c(3,2),mar = c(3.5, 3.5, 0.5, 0.1))
+jbplot_trj(fit_albacore1,type="B",add=T)
+jbplot_trj(fit_albacore1,type="F",add=T)
+jbplot_trj(fit_albacore1,type="BBmsy",add=T)
+jbplot_trj(fit_albacore1,type="FFmsy",add=T)
+jbplot_spphase(fit_albacore1,add=T)
+jbplot_kobe(fit_albacore1,add=T)
+
+```
+
+
+## 事前分布を無情報にしてみる
+
+```{r}
+
+jbinput_albacore2 <-  build_jabba(
+  catch = dat_albacore$catch,
+  cpue = dat_albacore$cpue,
+  se = dat_albacore$se,
+  assessment="test_albacore",
+  scenario = "TestRun",
+  model.type = "Schaefer",
+  add.catch.CV = FALSE,
+  # prior sets
+  r.dist = "range",
+  r.prior = c(0.1,0.9),
+  K.dist = "range",
+  K.prior = c(1000, 100000),
+  psi.dist = "beta",
+  psi.prior = c(0.05,0.95),
+  # variance sets
+  sigma.est = FALSE, # additional observation variance
+  fixed.obsE = 0.)
+
+```
+
+
+### MCMCの実行
+
+
+```{r}
+
+fit_albacore2 <- fit_jabba(jbinput_albacore2)
+fit_albacore2$estimates
+
+```
+
+
+
+### 結果の出力
+
+
+```{r}
+
+jbplot_ppdist(fit_albacore2)
+jbplot_cpuefits(fit_albacore2)
+jbplot_logfits(fit_albacore2)
+
+par(mfrow=c(3,2),mar = c(3.5, 3.5, 0.5, 0.1))
+jbplot_trj(fit_albacore2,type="B",add=T)
+jbplot_trj(fit_albacore2,type="F",add=T)
+jbplot_trj(fit_albacore2,type="BBmsy",add=T)
+jbplot_trj(fit_albacore2,type="FFmsy",add=T)
+jbplot_spphase(fit_albacore2,add=T)
+jbplot_kobe(fit_albacore2,add=T)
+
+```
+
+
