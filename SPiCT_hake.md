@@ -1,9 +1,9 @@
--   [1．準備](#準備)
--   [2. Hakeの解析](#hakeの解析)
+-   [1．準備](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_hake.md#1%E6%BA%96%E5%82%99)
+-   [2. Hakeの解析](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_hake.md#2hake%E3%81%AE%E8%A7%A3%E6%9E%90)
 -   [2-1.
-    シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassの過程誤差indexの観測誤差ありfの過程誤差cの観測誤差あり自由に推定)
+    シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_hake.md#2-1-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA1schaefer%E5%9E%8Bn2biomass%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AEindex%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Af%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AEc%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8A%E8%87%AA%E7%94%B1%E3%81%AB%E6%8E%A8%E5%AE%9A)
 -   [2-2. シナリオ2：nを推定,alpha=1,
-    beta=1と制約のもと](#シナリオ2nを推定alpha1-beta1と制約のもと)
+    beta=1と制約のもと](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_hake.md#2-2-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA2n%E3%82%92%E6%8E%A8%E5%AE%9Aalpha1-beta1%E3%81%A8%E5%88%B6%E7%B4%84%E3%81%AE%E3%82%82%E3%81%A8)
 -   [2-3.
     シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_hake.md#2-3-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA3schaefer%E5%9E%8Bn2biomass%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%A8index%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Af%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8A%E3%81%A8c%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%AA%E3%81%97)
 
