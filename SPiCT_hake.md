@@ -7,7 +7,7 @@
 -   [2-3.
     シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし](#シナリオ3schaefer型n2biomassの過程誤差とindexの観測誤差ありfの過程誤差ありとcの観測誤差なし)
 
-1.準備
+1.準備  
 -------
 
 ``` r
@@ -45,7 +45,7 @@ pol$hake #data on nothern namibian hake　データの単位はCが1000t
      [1] 1965 1966 1967 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979
     [16] 1980 1981 1982 1983 1984 1985 1986 1987 1988
 
-2. Hakeの解析
+2. Hakeの解析  
 -------------
 
 ``` r
@@ -63,7 +63,7 @@ inp$dtc
 
      [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 
-2-1. シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）
+2-1. シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）  
 ----------------------------------------------------------------------------------------------------------------
 
 ``` r
@@ -155,7 +155,7 @@ plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_hake_files/figure-markdown_github/hake_fit2-2.png" width="80%" />
 
-2-2. シナリオ2：nを推定,alpha=1, beta=1と制約のもと
+2-2. シナリオ2：nを推定,alpha=1, beta=1と制約のもと  
 ---------------------------------------------------
 
 ``` r
@@ -247,7 +247,7 @@ plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_hake_files/figure-markdown_github/hake_fit3-2.png" width="80%" />
 
-2-3. シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし
+2-3. シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし  
 -------------------------------------------------------------------------------------------------------
 
 ``` r
