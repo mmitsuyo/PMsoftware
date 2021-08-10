@@ -113,13 +113,27 @@ summary(res_hake3)
 
 ```
 
-```{r hake_fit3}
+```{r hake_plot3}
 # 2-4.　plot results
 plot(res_hake3) #全体的な結果のプロット
 plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事後分布
 ```
 
+```{r hake_residual3}
+# 2-5.　Residuals and diagnostics 残差診断
+res<-calc.osa.resid(res_hake3)
+plotspict.diagnostic(res)
+```
   
+```{r hake_retro3}
+# 2-6.　Retrospective plots レトロ解析
+res<-retro(res_hake3,nretroyear=5)
+plotspict.retro(res)
+plotspict.retro.fixed(res)
+
+mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
+```
+
 ## 2-3. シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし
 ```{r fit1}
 # 2-3.　model fit  
@@ -147,15 +161,15 @@ plot(res_hake) #全体的な結果のプロット
 plotspict.priors(res_hake)#shape parameter(n)とalpha,betaの事前分布と事後分布
 ```
 
-```{r albacore_fit3}
+```{r hake_residual}
 # 2-5.　Residuals and diagnostics 残差診断
 res<-calc.osa.resid(res_hake)
 plotspict.diagnostic(res)
 ```
 
-```{r albacore_retro}
+```{r hake_retro}
 # 2-6.　Retrospective plots レトロ解析
-res<-retro(res_hake,nretroyear=4)
+res<-retro(res_hake,nretroyear=5)
 plotspict.retro(res)
 plotspict.retro.fixed(res)
 

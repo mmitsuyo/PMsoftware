@@ -1,5 +1,5 @@
--   [1.準備](#1.準備)
--   [2. Hakeの解析](#2.Hakeの解析)
+-   [1．準備](#準備)
+-   [2. Hakeの解析](#hakeの解析)
 -   [2-1.
     シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassの過程誤差indexの観測誤差ありfの過程誤差cの観測誤差あり自由に推定)
 -   [2-2. シナリオ2：nを推定,alpha=1,
@@ -7,7 +7,7 @@
 -   [2-3.
     シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし](#シナリオ3schaefer型n2biomassの過程誤差とindexの観測誤差ありfの過程誤差ありとcの観測誤差なし)
 
-1.準備  
+1．準備
 -------
 
 ``` r
@@ -45,7 +45,7 @@ pol$hake #data on nothern namibian hake　データの単位はCが1000t
      [1] 1965 1966 1967 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979
     [16] 1980 1981 1982 1983 1984 1985 1986 1987 1988
 
-2. Hakeの解析  
+2. Hakeの解析
 -------------
 
 ``` r
@@ -63,7 +63,7 @@ inp$dtc
 
      [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 
-2-1. シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）  
+2-1. シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）
 ----------------------------------------------------------------------------------------------------------------
 
 ``` r
@@ -155,7 +155,7 @@ plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_hake_files/figure-markdown_github/hake_fit2-2.png" width="80%" />
 
-2-2. シナリオ2：nを推定,alpha=1, beta=1と制約のもと  
+2-2. シナリオ2：nを推定,alpha=1, beta=1と制約のもと
 ---------------------------------------------------
 
 ``` r
@@ -239,15 +239,47 @@ summary(res_hake3)
 plot(res_hake3) #全体的な結果のプロット
 ```
 
-<img src="SPiCT_hake_files/figure-markdown_github/hake_fit3-1.png" width="80%" />
+<img src="SPiCT_hake_files/figure-markdown_github/hake_plot3-1.png" width="80%" />
 
 ``` r
 plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事後分布
 ```
 
-<img src="SPiCT_hake_files/figure-markdown_github/hake_fit3-2.png" width="80%" />
+<img src="SPiCT_hake_files/figure-markdown_github/hake_plot3-2.png" width="80%" />
 
-2-3. シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし  
+``` r
+# 2-5.　Residuals and diagnostics 残差診断
+res<-calc.osa.resid(res_hake3)
+plotspict.diagnostic(res)
+```
+
+<img src="SPiCT_hake_files/figure-markdown_github/hake_residual3-1.png" width="80%" />
+
+``` r
+# 2-6.　Retrospective plots レトロ解析
+res<-retro(res_hake3,nretroyear=5)
+plotspict.retro(res)
+```
+
+<img src="SPiCT_hake_files/figure-markdown_github/hake_retro3-1.png" width="80%" />
+
+          FFmsy       BBmsy 
+    -0.01234212 -0.02800252 
+
+``` r
+plotspict.retro.fixed(res)
+```
+
+<img src="SPiCT_hake_files/figure-markdown_github/hake_retro3-2.png" width="80%" />
+
+``` r
+mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
+```
+
+          FFmsy       BBmsy 
+    -0.01234212 -0.02800252 
+
+2-3. シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし
 -------------------------------------------------------------------------------------------------------
 
 ``` r
@@ -342,28 +374,28 @@ res<-calc.osa.resid(res_hake)
 plotspict.diagnostic(res)
 ```
 
-<img src="SPiCT_hake_files/figure-markdown_github/albacore_fit3-1.png" width="80%" />
+<img src="SPiCT_hake_files/figure-markdown_github/hake_residual-1.png" width="80%" />
 
 ``` r
 # 2-6.　Retrospective plots レトロ解析
-res<-retro(res_hake,nretroyear=4)
+res<-retro(res_hake,nretroyear=5)
 plotspict.retro(res)
 ```
 
-<img src="SPiCT_hake_files/figure-markdown_github/albacore_retro-1.png" width="80%" />
+<img src="SPiCT_hake_files/figure-markdown_github/hake_retro-1.png" width="80%" />
 
           FFmsy       BBmsy 
-     0.01048623 -0.01355169 
+     0.01875371 -0.01881841 
 
 ``` r
 plotspict.retro.fixed(res)
 ```
 
-<img src="SPiCT_hake_files/figure-markdown_github/albacore_retro-2.png" width="80%" />
+<img src="SPiCT_hake_files/figure-markdown_github/hake_retro-2.png" width="80%" />
 
 ``` r
 mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
 ```
 
           FFmsy       BBmsy 
-     0.01048623 -0.01355169
+     0.01875371 -0.01881841
