@@ -5,7 +5,7 @@
 -   [2-2. シナリオ2：nを推定,alpha=1,
     beta=1と制約のもと](#シナリオ2nを推定alpha1-beta1と制約のもと)
 -   [2-3.
-    シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし](#シナリオ3schaefer型n2biomassの過程誤差とindexの観測誤差ありfの過程誤差ありとcの観測誤差なし)
+    シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし](#https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_hake.md#2-3-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA3schaefer%E5%9E%8Bn2biomass%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%A8index%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Af%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8A%E3%81%A8c%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%AA%E3%81%97)
 
 1．準備
 -------
