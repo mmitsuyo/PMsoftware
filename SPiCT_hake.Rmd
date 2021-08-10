@@ -1,0 +1,163 @@
+---
+title: "SPiCT_hake"
+author: "Mitsuyo Miyagawa"
+date: "`r Sys.Date()`"
+output: 
+  md_document:
+    toc: true
+    variant: markdown_github
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,
+                     cache=TRUE,
+               cache.lazy=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.width=10,
+               fig.height = 7.5, 
+               out.width='80%')
+```
+
+## 1．準備
+
+```{r read data}
+
+devtools::install_github("DTUAqua/spict/spict") #パッケージのインストール
+
+library(spict)#ライブラリーの読み込み  
+
+#1-1　例データの読み込み  
+
+data(pol)
+#pol$albacore #data of south atlantic albacore　データの単位はCが1000t, CPUEはkg/100hooks  
+#$lobster #data on new zealand rock lobster データの単位はCがt  
+pol$hake #data on nothern namibian hake　データの単位はCが1000t  
+
+```
+## 2. Hakeの解析
+
+```{r plot_C_I}
+#2-1.　例データのプロット  
+plotspict.data(pol$hake)
+
+```
+
+```{r setting}
+# 2-2.　time intervalの指定/確認  
+inp<-check.inp(pol$hake)
+inp$dtc
+
+```
+  
+
+## 2-1. シナリオ1：Schaefer型(n=2),Biomassの過程誤差・Indexの観測誤差あり,Fの過程誤差,Cの観測誤差あり（自由に推定）
+```{r fit2}
+# 2-3.　model fit  
+# Base Case 
+ inp <- pol$hake
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ #inp$priors$logbeta<-c(log(1),0.001^2) #betaに関するパラメータをfix. beta=1に固定
+ 
+ #inp$priors$logalpha<-c(1,1,0) #alphaに関するpriorをなくす場合の設定
+ #inp$priors$logbeta<-c(1,1,0)#betaに関するpriorをなくす場合の設定
+ 
+ ##inp$phases$logsdc<- -1 
+ #inp$phases$logsdf<- -1
+ #inp$ini$logsdc<-log(0.00001)#漁獲係数に関する過程誤差をほぼなしと仮定したいのだが設定はこれでよいのか？
+ #inp$priors$logsdf<-c(log(0.0000001),1e-3) 
+ #inp$priors$logsdc<-log(0.0000001)#ここも同様に漁獲量に関する観察誤差をなしと仮定したいのだが設定はこれでよいのか？
+ # inp$priors$logsdf<-log(0.0000001)
+ 
+ res_hake2<-fit.spict(inp)
+
+# summary of result
+summary(res_hake2)
+
+```
+
+```{r hake_fit2}
+# 2-4.　plot results
+plot(res_hake2) #全体的な結果のプロット
+plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+  
+## 2-2. シナリオ2：nを推定,alpha=1, beta=1と制約のもと  
+
+```{r fit3}
+# 2-3.　model fit  
+# Base Case 
+ inp <- pol$hake
+ #inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ inp$priors$logbeta<-c(log(1),0.001^2) #betaに関するパラメータをfix. beta=1に固定
+ inp$priors$logalpha<-c(log(1),0.001^2) #betaに関するパラメータをfix. beta=1に固定
+ #inp$priors$logalpha<-c(1,1,0) #alphaに関するpriorをなくす場合の設定
+ #inp$priors$logbeta<-c(1,1,0)#betaに関するpriorをなくす場合の設定
+ 
+ ##inp$phases$logsdc<- -1 
+ #inp$phases$logsdf<- -1
+ #inp$ini$logsdc<-log(0.00001)#漁獲係数に関する過程誤差をほぼなしと仮定したいのだが設定はこれでよいのか？
+ #inp$priors$logsdf<-c(log(0.0000001),1e-3) 
+ #inp$priors$logsdc<-log(0.0000001)#ここも同様に漁獲量に関する観察誤差をなしと仮定したいのだが設定はこれでよいのか？
+ # inp$priors$logsdf<-log(0.0000001)
+ 
+ res_hake3<-fit.spict(inp)
+
+# summary of result
+summary(res_hake3)
+
+```
+
+```{r hake_fit3}
+# 2-4.　plot results
+plot(res_hake3) #全体的な結果のプロット
+plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+  
+## 2-3. シナリオ3：Schaefer型(n=2),Biomassの過程誤差とIndexの観測誤差あり,Fの過程誤差ありとCの観測誤差なし
+```{r fit1}
+# 2-3.　model fit  
+# Base Case 
+ inp <- pol$hake
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+ #inp$phases$logsdc<- -1 #logsdcを固定するフェーズの指定
+ #inp$phases$logsdf<- -1#logsdfを固定するフェーズの指定
+ #inp$ini$logsdc<-log(0.00001)#漁獲係数に関する過程誤差をほぼなしと仮定したいのだが設定はこれでよいのか？
+ #inp$priors$logsdf<-c(log(0.001),1e-3) 
+ inp$priors$logsdc<-c(log(0.001),1e-3)#ここも同様に漁獲量に関する観察誤差をなしと仮定したいのだが設定はこれでよいのか
+ #inp$priors$logsdf<-c(log(0.001),1e-3)
+ 
+ res_hake<-fit.spict(inp)
+
+# summary of result
+summary(res_hake)
+
+```
+
+```{r hake_fit1}
+# 2-4.　plot results
+plot(res_hake) #全体的な結果のプロット
+plotspict.priors(res_hake)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+```{r albacore_fit3}
+# 2-5.　Residuals and diagnostics 残差診断
+res<-calc.osa.resid(res_hake)
+plotspict.diagnostic(res)
+```
+
+```{r albacore_retro}
+# 2-6.　Retrospective plots レトロ解析
+res<-retro(res_hake,nretroyear=4)
+plotspict.retro(res)
+plotspict.retro.fixed(res)
+
+mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
+```
