@@ -1,0 +1,157 @@
+---
+title: "SPiCT_hake"
+author: "Mitsuyo Miyagawa"
+date: "`r Sys.Date()`"
+output: 
+  md_document:
+    toc: true
+    variant: markdown_github
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,
+                     cache=TRUE,
+               cache.lazy=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.width=10,
+               fig.height = 7.5, 
+               out.width='80%')
+```
+
+## 1．準備
+
+```{r read data}
+#詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
+
+devtools::install_github("DTUAqua/spict/spict") #パッケージのインストール
+
+library(spict)#ライブラリーの読み込み  
+
+#1-1　データの読み込み  
+test_data<-read.csv("example.csv")
+test_data<-as.list(test_data) #リスト形式に変換　
+
+```
+## 2. test_data(ここではHake)の解析
+
+```{r plot_C_I}
+#2-1.　Catchと資源量指標値データのプロット  
+plotspict.data(test_data)
+
+```
+
+```{r setting}
+# 2-2.　time intervalの指定/確認  
+inp<-check.inp(test_data)
+inp$dtc #time-intervalの指定．特に指定しない場合は，データの最初の観察値を1とし，その次の観察値は1年後とみなされるのでtime-intervalは1となる
+
+```
+  
+
+## 2-1. シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）
+```{r fit2}
+ inp <- test_data
+
+ #shape parameterを固定したい場合は下記で定める
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+ #その他の過程誤差，観測誤差に関してはとりあえずデフォルトのゆるいpriorをあてて推定させてみる
+ #(どんなゆるいpriorをあてているかはsummaryを実行したときのPriorsというところに出てくる)
+ 
+ #実行するためのコマンド
+ res_hake2<-fit.spict(inp)
+
+ #結果を要約する
+ summary(res_hake2)
+
+```
+
+```{r hake_fit2}
+# 2-4.　plot results
+plot(res_hake2) #全体的な結果のプロット
+plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+  
+## 2-2. シナリオ2：nを推定させる,alpha=1, beta=1と制約を置く 
+
+```{r fit3}
+
+ inp <- pol$hake
+
+ inp$priors$logbeta<-c(log(1),0.001^2) #betaに関するパラメータをfix. beta=1に固定
+ inp$priors$logalpha<-c(log(1),0.001^2) #alphaに関するパラメータをfix. beta=1に固定
+ 
+ #inp$priors$logalpha<-c(1,1,0) #alphaに関するpriorをなくす場合の設定
+ #inp$priors$logbeta<-c(1,1,0)#betaに関するpriorをなくす場合の設定
+ 
+ res_hake3<-fit.spict(inp)
+
+# summary of result
+ summary(res_hake3)
+
+```
+
+```{r hake_plot3}
+# 2-4.　plot results
+plot(res_hake3) #全体的な結果のプロット
+plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+```{r hake_residual3}
+# 2-5.　Residuals and diagnostics 残差診断
+res<-calc.osa.resid(res_hake3)
+plotspict.diagnostic(res)
+```
+  
+```{r hake_retro3}
+# 2-6.　Retrospective plots レトロ解析
+res<-retro(res_hake3,nretroyear=5)
+plotspict.retro(res)
+plotspict.retro.fixed(res)
+
+mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
+```
+
+## 2-3. シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし
+```{r fit1}
+
+ inp <- pol$hake
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+
+ inp$priors$logsdc<-c(log(0.001),1e-3)#漁獲量に関する観察誤差をほぼなしと仮定するための設定
+ inp$priors$logbeta<-c(1,1,0)#betaに関するpriorはなくしておく
+ 
+ res_hake<-fit.spict(inp)
+
+# summary of result
+summary(res_hake)
+
+```
+
+```{r hake_fit1}
+# 2-4.　plot results
+plot(res_hake) #全体的な結果のプロット
+plotspict.priors(res_hake)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+```{r hake_residual}
+# 2-5.　Residuals and diagnostics 残差診断
+res<-calc.osa.resid(res_hake)
+plotspict.diagnostic(res)
+```
+
+```{r hake_retro}
+# 2-6.　Retrospective plots レトロ解析
+res<-retro(res_hake,nretroyear=5)
+plotspict.retro(res)
+plotspict.retro.fixed(res)
+
+mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
+```
