@@ -1,11 +1,21 @@
 -   [1．準備](#準備)
 -   [2. test\_data(ここではHake)の解析](#test_dataここではhakeの解析)
--   [2-1.
-    シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)
--   [2-2. シナリオ2：nを推定させる,alpha=1,
-    beta=1と制約を置く](#シナリオ2nを推定させるalpha1-beta1と制約を置く)
--   [2-3.
-    シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](#シナリオ3schaefer型n2biomassとfの過程誤差ありindexの観測誤差ありcの観測誤差なし)
+-   [以下は季節性データを使用しない場合の例です　](#以下は季節性データを使用しない場合の例です)
+    -   [2-1.
+        シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)
+    -   [2-2. シナリオ2：nを推定させる,alpha=1,
+        beta=1と制約を置く](#シナリオ2nを推定させるalpha1-beta1と制約を置く)
+    -   [2-3.
+        シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](#シナリオ3schaefer型n2biomassとfの過程誤差ありindexの観測誤差ありcの観測誤差なし)
+    -   [3. Residuls and diagnostics
+        残差診断のやり方例](#residuls-and-diagnostics-残差診断のやり方例)
+    -   [4. Retrospective plots
+        レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
+    -   [5. Robust estimation
+        外れ値の影響の緩和の例](#robust-estimation-外れ値の影響の緩和の例)
+    -   [6. Forecasting
+        将来予測のやり方例](#forecasting-将来予測のやり方例)
+    -   [7. Management 管理 　　](#management-管理)
 
 1．準備
 -------
@@ -23,7 +33,7 @@ devtools::install_github("DTUAqua/spict/spict") #パッケージのインスト�
 library(spict)#ライブラリーの読み込み  
 
 #1-1　データの読み込み  
-test_data<-read.csv("example.csv")
+test_data<-read.csv("example.csv") #example.csvの形式に従い，データを作成してください
 test_data<-as.list(test_data) #リスト形式に変換　
 ```
 
@@ -40,10 +50,13 @@ plotspict.data(test_data)
 ``` r
 # 2-2.　time intervalの指定/確認  
 inp<-check.inp(test_data)
-inp$dtc #time-intervalの指定．特に指定しない場合は，データの最初の観察値を1とし，その次の観察値は1年後とみなされるのでtime-intervalは1となる
+inp$dtc #time-intervalの指定．特に指定しない場合は，データの最初の観察値を1とし，その次の観察値は1年後とみなされるのでtime-intervalは1となる.もし四半期のデータなら，inp$dtc<-0.25と指定する
 ```
 
      [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+以下は季節性データを使用しない場合の例です　
+============================================
 
 2-1. シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）
 ----------------------------------------------------------------------------------------------------
@@ -118,7 +131,11 @@ inp$dtc #time-intervalの指定．特に指定しない場合は，データの�
      E(B_inf)       1724.3530870           NA           NA  7.4526072  
 
 ``` r
-# 2-4.　plot results
+ #ちなみに結果に表示されるr,rold,rcの中身は r = m⁄K nn⁄(n-1), rold = | m⁄K nn⁄(n-1)1⁄(n-1) |,rc = | m⁄K n1⁄(n-1) 2 |.必要なのはr
+```
+
+``` r
+# plot results
 plot(res_hake2) #全体的な結果のプロット
 ```
 
@@ -134,7 +151,7 @@ plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事
 ---------------------------------------------------------
 
 ``` r
- inp <- pol$hake
+ inp <- test_data
 
  inp$priors$logbeta<-c(log(1),0.001^2) #betaに関するパラメータをfix. beta=1に固定
  inp$priors$logalpha<-c(log(1),0.001^2) #alphaに関するパラメータをfix. beta=1に固定
@@ -202,7 +219,7 @@ plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事
      E(B_inf)       1755.7829461          NA           NA  7.4706702  
 
 ``` r
-# 2-4.　plot results
+# plot results
 plot(res_hake3) #全体的な結果のプロット
 ```
 
@@ -214,43 +231,11 @@ plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_plot3-2.png" width="80%" />
 
-``` r
-# 2-5.　Residuals and diagnostics 残差診断
-res<-calc.osa.resid(res_hake3)
-plotspict.diagnostic(res)
-```
-
-<img src="SPiCT_how_to_files/figure-markdown_github/hake_residual3-1.png" width="80%" />
-
-``` r
-# 2-6.　Retrospective plots レトロ解析
-res<-retro(res_hake3,nretroyear=5)
-plotspict.retro(res)
-```
-
-<img src="SPiCT_how_to_files/figure-markdown_github/hake_retro3-1.png" width="80%" />
-
-          FFmsy       BBmsy 
-    -0.01234212 -0.02800252 
-
-``` r
-plotspict.retro.fixed(res)
-```
-
-<img src="SPiCT_how_to_files/figure-markdown_github/hake_retro3-2.png" width="80%" />
-
-``` r
-mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
-```
-
-          FFmsy       BBmsy 
-    -0.01234212 -0.02800252 
-
 2-3. シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし
 ----------------------------------------------------------------------------------------------
 
 ``` r
- inp <- pol$hake
+ inp <- test_data
  inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
  
 
@@ -317,7 +302,7 @@ summary(res_hake)
      E(B_inf)       1702.9408294           NA           NA  7.4401119  
 
 ``` r
-# 2-4.　plot results
+# plot results
 plot(res_hake) #全体的な結果のプロット
 ```
 
@@ -329,16 +314,22 @@ plotspict.priors(res_hake)#shape parameter(n)とalpha,betaの事前分布と事�
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_fit1-2.png" width="80%" />
 
+3. Residuls and diagnostics 残差診断のやり方例
+----------------------------------------------
+
 ``` r
-# 2-5.　Residuals and diagnostics 残差診断
+#シナリオ3の結果を例に
 res<-calc.osa.resid(res_hake)
 plotspict.diagnostic(res)
 ```
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_residual-1.png" width="80%" />
 
+4. Retrospective plots レトロ解析のやり方例
+-------------------------------------------
+
 ``` r
-# 2-6.　Retrospective plots レトロ解析
+#シナリオ3の結果を例に
 res<-retro(res_hake,nretroyear=5)
 plotspict.retro(res)
 ```
@@ -359,4 +350,295 @@ mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
 ```
 
           FFmsy       BBmsy 
-     0.01771116 -0.01836890
+     0.01771116 -0.01836890 
+
+5. Robust estimation 外れ値の影響の緩和の例
+-------------------------------------------
+
+``` r
+inp <- test_data
+ inp$obsC[10] <-3*inp$obsC[10] #わざと外れ値をつくってみる
+ res1 <-fit.spict(inp) #外れ値の影響を特に気にせず通常の推定をした場合
+ 
+ inp$robflagc <-1 #robust estimationをCatchデータに適用する場合
+ #inp$robflagi <-1 #robust estimationをindexデータに適用する場合
+ #inp$robflage <-1 #robust estimationをeffortデータに適用する場合
+ 
+ res2 <-fit.spict(inp) #Cの外れ値を考慮した場合の推定
+ sumspict.parest(res2)
+```
+
+               estimate        cilow        ciupp    log.est
+    alpha  3.025826e+00 1.533404e-01 5.970781e+01  1.1071840
+    beta   7.098228e-01 3.500466e-01 1.439375e+00 -0.3427399
+    r      4.241222e-01 2.853478e-01 6.303872e-01 -0.8577337
+    rc     3.137342e-01 1.996025e-01 4.931260e-01 -1.1592090
+    rold   2.489413e-01 1.200241e-01 5.163277e-01 -1.3905380
+    m      2.929635e+02 2.412458e+02 3.557684e+02  5.6800482
+    K      3.348288e+03 2.341094e+03 4.788803e+03  8.1162046
+    q      2.720300e-04 1.772300e-04 4.175200e-04 -8.2096041
+    n      2.703703e+00 1.533024e+00 4.768360e+00  0.9946224
+    sdb    2.485346e-02 1.665880e-03 3.707916e-01 -3.6947584
+    sdf    4.035196e-01 2.519999e-01 6.461435e-01 -0.9075302
+    sdi    7.520223e-02 4.697344e-02 1.203952e-01 -2.5875744
+    sdc    2.864274e-01 1.814061e-01 4.522488e-01 -1.2502701
+    pp     1.000000e+00 0.000000e+00 1.000000e+00 18.8219729
+    robfac 1.147013e+00 1.000000e+00          Inf -1.9172340
+
+``` r
+ #外れ値を考慮に入れた推定(観察誤差の誤差分布として混合分布を仮定）では新たに，ppとrobfacという裾の分布の広がり度を示すパラが推定されるようになるが，必ずしも上手く推定できるとは限らない．上記の例でも推定は難しいので下記のようにして，裾の広がり度をgivenにする場合も多い.manualでは下記のようにすればよい，と書いてあるが走らせると，ppやrobfacにはphaseは指定できないと言われてしまう．
+ 
+ #inp$phases$pp <--1
+ #inp$phases$robfac <--1
+ 
+ #inp$ini$pp <-0.95
+ #inp$ini$robfac <-15 
+```
+
+6. Forecasting 将来予測のやり方例
+---------------------------------
+
+``` r
+inp <- test_data
+ inp$maninterval <-c(1990,1991) #もし1990年から1年間の将来予測をしたいときのスタート年の終わりの年
+ inp$ffac <-0.75 #Fishing mortality multiplier at the start of the forecastを指定．デフォルトは潜在的なseasonal patternをmaintainして将来予測される
+ inp$maneval<-1991 #評価したい年を指定
+ rep<-fit.spict(inp)
+ 
+ sumspict.predictions(rep) #将来予測だけの結果を特にみたい場合
+```
+
+                     prediction        cilow        ciupp    log.est
+    B_1991.00      1.950517e+03 1.046106e+03 3636.8385633  7.5758499
+    F_1991.00      8.541414e-02 2.064521e-02    0.3533785 -2.4602436
+    B_1991.00/Bmsy 1.293723e+00 9.959454e-01    1.6805325  0.2575239
+    F_1991.00/Fmsy 4.858849e-01 1.330830e-01    1.7739620 -0.7217835
+    Catch_1990.00  1.634251e+02 6.104824e+01  437.4861264  5.0963547
+    E(B_inf)       2.152319e+03           NA           NA  7.6743011
+
+``` r
+ summary(rep) #いつも通りの結果をみたい場合
+```
+
+    Convergence: 0  MSG: relative convergence (4)
+    Objective function at optimum: 4.4440893
+    Euler time step (years):  1/16 or 0.0625
+    Nobs C: 24,  Nobs I1: 24
+
+    Priors
+         logn  ~  dnorm[log(2), 2^2]
+     logalpha  ~  dnorm[log(1), 2^2]
+      logbeta  ~  dnorm[log(1), 2^2]
+
+    Model parameter estimates w 95% CI 
+                estimate        cilow        ciupp    log.est  
+     alpha     1.7959743    0.0006129 5262.7763737  0.5855477  
+     beta      0.4848746    0.1980997    1.1867933 -0.7238649  
+     r         0.5090408    0.2963677    0.8743279 -0.6752272  
+     rc        0.3529879    0.1760163    0.7078913 -1.0413216  
+     rold      0.2701653    0.1057079    0.6904810 -1.3087214  
+     m       266.8344900  223.2802584  318.8846411  5.5866286  
+     K      2652.5400114 1615.5641813 4355.1154412  7.8832730  
+     q         0.0003666    0.0002217    0.0006062 -7.9113255  
+     n         2.8841828    1.5794289    5.2667834  1.0592416  
+     sdb       0.0388151    0.0000694   21.7119809 -3.2489449  
+     sdf       0.3980508    0.2543937    0.6228316 -0.9211758  
+     sdi       0.0697110    0.0127255    0.3818818 -2.6633973  
+     sdc       0.1930047    0.1022833    0.3641925 -1.6450406  
+     
+    Deterministic reference points (Drp)
+               estimate       cilow        ciupp   log.est  
+     Bmsyd 1511.8620969 821.5946811 2782.0615845  7.321097  
+     Fmsyd    0.1764939   0.0880082    0.3539457 -1.734469  
+     MSYd   266.8344900 223.2802584  318.8846411  5.586629  
+    Stochastic reference points (Srp)
+               estimate       cilow       ciupp   log.est rel.diff.Drp  
+     Bmsys 1507.6780199 798.2694731 2847.525915  7.318326 -0.002775179  
+     Fmsys    0.1757909   0.0908695    0.340075 -1.738460 -0.003999266  
+     MSYs   265.0331320 228.5426991  307.349836  5.579855 -0.006796728  
+
+    States w 95% CI (inp$msytype: s)
+                        estimate       cilow        ciupp    log.est  
+     B_1988.94      1844.1703430 953.7479560 3565.8941469  7.5197848  
+     F_1988.94         0.1138851   0.0475966    0.2724948 -2.1725652  
+     B_1988.94/Bmsy    1.2231858   0.9550639    1.5665795  0.2014588  
+     F_1988.94/Fmsy    0.6478442   0.3384197    1.2401823 -0.4341051  
+
+    Predictions w 95% CI (inp$msytype: s)
+                      prediction        cilow        ciupp    log.est  
+     B_1991.00      1950.5173470 1046.1058017 3636.8385633  7.5758499  
+     F_1991.00         0.0854141    0.0206452    0.3533785 -2.4602436  
+     B_1991.00/Bmsy    1.2937227    0.9959454    1.6805325  0.2575239  
+     F_1991.00/Fmsy    0.4858849    0.1330830    1.7739620 -0.7217835  
+     Catch_1990.00   163.4250853   61.0482410  437.4861264  5.0963547  
+     E(B_inf)       2152.3190221           NA           NA  7.6743012  
+
+``` r
+ plot(rep) #plotみたいとき
+```
+
+<img src="SPiCT_how_to_files/figure-markdown_github/hake_forecast-1.png" width="80%" />
+
+7. Management 管理 　　
+-----------------------
+
+　上記の方法でも将来予測出来るが，SPiCTにはデフォルトで8種類の管理方策が備わっている．  
+　1. currentCatch: 最終年の漁獲量を続ける 　2. currentF:
+最終年のFを用いる 　3. Fmsy: Fmsyで漁獲  
+　4. noF No fishing: 現在のFの1％まで減らす  
+　5. reduceF25: Fを25%減らす  
+　6. increaseF25: Fを25%増やす  
+　7. msyHockeyStick: ICESのMSYのH-S ruleを適用 　8. ices: ICES
+MSY35番目のH-S advice rule使う  
+?manageと検索すると色々と詳しい説明が出てくる
+
+``` r
+ inp <- test_data
+ rep <- fit.spict(inp)
+ rep <- manage(rep)
+```
+
+    Selected scenario(s):  currentCatch, currentF, Fmsy, noF, reduceF25, increaseF25, msyHockeyStick, ices  
+
+``` r
+ sumspict.manage(rep) #管理方策を適用した場合の結果のまとめの出力
+```
+
+    SPiCT timeline:
+                                                      
+          Observations              Management        
+        1965.00 - 1989.00        1989.00 - 1990.00    
+     |-----------------------| ----------------------|
+
+    Management evaluation: 1990.00
+
+    Predicted catch for management period and states at management evaluation time:
+
+                                 C B/Bmsy F/Fmsy
+    1. Keep current catch    197.4   1.25   0.60
+    2. Keep current F        212.0   1.25   0.65
+    3. Fish at Fmsy          318.6   1.18   1.00
+    4. No fishing              0.2   1.38   0.00
+    5. Reduce F by 25%       161.0   1.28   0.49
+    6. Increase F by 25%     261.8   1.21   0.81
+    7. MSY hockey-stick rule 318.6   1.18   1.00
+    8. ICES advice rule      278.7   1.20   0.87
+
+``` r
+ plot2(rep) #様々な管理方策の結果を図示
+```
+
+<img src="SPiCT_how_to_files/figure-markdown_github/hake_management-1.png" width="80%" />
+
+``` r
+ plotspict.hcr(rep) #様々な管理方策そのもののルールを図示
+```
+
+<img src="SPiCT_how_to_files/figure-markdown_github/hake_management-2.png" width="80%" />
+
+\#\#7-1. 評価と管理の間の期間の指定
+
+``` r
+ man.timeline(inp) #観察事象の年代と将来予測（管理）の年代の表示
+```
+
+    SPiCT timeline:
+                                                      
+          Observations              Management        
+        1965.00 - 1989.00        1989.00 - 1990.00    
+     |-----------------------| ----------------------|
+
+    Management evaluation: 1990.00
+
+``` r
+ man.timeline(rep) #観察事象の年代と将来予測（管理）の年代の表示(上記でもこれでもどっちでもOK）
+```
+
+    SPiCT timeline:
+                                                      
+          Observations              Management        
+        1965.00 - 1989.00        1989.00 - 1990.00    
+     |-----------------------| ----------------------|
+
+    Management evaluation: 1990.00
+
+``` r
+ inp$maninterval <-c(1990,1991) #もし1990年から1年間の将来予測をしたいときのスタート年の終わりの年
+ man.timeline(inp) #intermediate periodが表示されるようになる
+```
+
+    SPiCT timeline:
+                                                                              
+          Observations             Intermediate             Management        
+        1965.00 - 1989.00        1989.00 - 1990.00       1990.00 - 1991.00    
+     |-----------------------| ----------------------| ----------------------|
+
+    Management evaluation: 1991.00
+
+``` r
+ repIntPer <-manage(rep, scenarios=c(1,2), maninterval=c(1990,1991),maneval=1991) #1991年から管理方策１，２の管理を実施するように指定
+```
+
+    Selected scenario(s):  currentCatch, currentF  
+
+``` r
+ plotspict.catch(repIntPer)
+```
+
+<img src="SPiCT_how_to_files/figure-markdown_github/hake_inter-1.png" width="80%" />
+
+``` r
+ #intermediate periodの間のCatchレベルを指定してたい場合（↓）．デフォルトでは，最終年と同じFを使う．
+  repIntPer <-manage(rep, scenarios=c(8), maninterval=c(1990,1991), intermediatePeriodCatch=5)
+```
+
+    Selected scenario(s):  ices  
+
+``` r
+  par(mfrow=c(1,2))
+  plotspict.biomass(repIntPer)
+  plotspict.catch(repIntPer)
+```
+
+<img src="SPiCT_how_to_files/figure-markdown_github/hake_inter-2.png" width="80%" />
+
+　 \#\# 7-2. 自分でつくった管理方策を適用する場合
+add.man.scenarioの引数で大事なもの： ffac: 現在のFの何倍にするのかを指定
+cfac: 現在のCの何倍にするのかを指定　 breakpointBBmsy: H-S
+HCRの場合のB/Bmsyの折れ点の位置．デフォルトでは折れ点なし
+などなど（詳細はhandbook p51参照）
+
+``` r
+ repIntPer <- add.man.scenario(repIntPer,ffac=1.5) #例えば，漁獲係数を50%増加のようなシナリオをrepIntPerに加えたい場合
+ sumspict.manage(repIntPer)
+```
+
+    SPiCT timeline:
+                                                                              
+          Observations             Intermediate             Management        
+        1965.00 - 1989.00        1989.00 - 1990.00       1990.00 - 1991.00    
+     |-----------------------| ----------------------| ----------------------|
+
+    Management evaluation: 1990.00
+
+    Predicted catch for management period and states at management evaluation time:
+
+                                C B/Bmsy F/Fmsy
+    1. ICES advice rule (@) 328.2   1.40   0.91
+    2. customScenario_1     310.3   1.18   0.97
+    (@) This scenario assumes another management period. Thus, the estimates might not be comparable to the other scenarios.
+
+``` r
+ plotspict.f(repIntPer)
+```
+
+<img src="SPiCT_how_to_files/figure-markdown_github/hake_management2-1.png" width="80%" />
+
+``` r
+ #例えば，最終年に観察されたCatchの64%減での将来予測をしたい場合,そしてそのシナリオ名を"reduced_catch"と名付けたい場合
+ repIntPer <-add.man.scenario(repIntPer, cfac=0.64, scenarioTitle="reduced_catch")
+
+ names(repIntPer$man)
+```
+
+    [1] "ices"             "customScenario_1" "reduced_catch"
