@@ -14,8 +14,8 @@
 -   [6. Forecasting
         将来予測のやり方例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#6-forecasting-%E5%B0%86%E6%9D%A5%E4%BA%88%E6%B8%AC%E3%81%AE%E3%82%84%E3%82%8A%E6%96%B9%E4%BE%8B)
 -   [7. Management 管理 　　](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-management-%E7%AE%A1%E7%90%86-)  
-  -   [7-1.評価と管理の間の期間の指定](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-1-%E8%A9%95%E4%BE%A1%E3%81%A8%E7%AE%A1%E7%90%86%E3%81%AE%E9%96%93%E3%81%AE%E6%9C%9F%E9%96%93%E3%81%AE%E6%8C%87%E5%AE%9A)     
-  -   [7-2. 自分でつくった管理方策を適用する場合](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-2-%E8%87%AA%E5%88%86%E3%81%A7%E3%81%A4%E3%81%8F%E3%81%A3%E3%81%9F%E7%AE%A1%E7%90%86%E6%96%B9%E7%AD%96%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88)   
+    -   [7-1.評価と管理の間の期間の指定](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-1-%E8%A9%95%E4%BE%A1%E3%81%A8%E7%AE%A1%E7%90%86%E3%81%AE%E9%96%93%E3%81%AE%E6%9C%9F%E9%96%93%E3%81%AE%E6%8C%87%E5%AE%9A)     
+    -   [7-2. 自分でつくった管理方策を適用する場合](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-2-%E8%87%AA%E5%88%86%E3%81%A7%E3%81%A4%E3%81%8F%E3%81%A3%E3%81%9F%E7%AE%A1%E7%90%86%E6%96%B9%E7%AD%96%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88)   
    
 ### 詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
 # 1．準備
