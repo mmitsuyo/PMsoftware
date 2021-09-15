@@ -1,4 +1,4 @@
--   [1．準備](#準備)
+-   [1．準備](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#1%E6%BA%96%E5%82%99)
 -   [2. test\_data(ここではHake)の解析](#test_dataここではhakeの解析)
  -   [以下は季節性データを使用しない場合の例です　](#以下は季節性データを使用しない場合の例です)   
     -   [2-1.シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)   
