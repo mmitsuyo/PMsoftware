@@ -1,21 +1,22 @@
 -   [1．準備](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#1%E6%BA%96%E5%82%99)
--   [2. test\_data(ここではHake)の解析](#test_dataここではhakeの解析)
- -   [以下は季節性データを使用しない場合の例です　](#以下は季節性データを使用しない場合の例です)   
-    -   [2-1.シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)   
+-   [2. test\_data(ここではHake)の解析](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-test_data%E3%81%93%E3%81%93%E3%81%A7%E3%81%AFhake%E3%81%AE%E8%A7%A3%E6%9E%90)
+    -   [2-1.シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-1-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA1schaefer%E5%9E%8Bn2biomass%E3%81%A8f%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Aindex%E3%81%A8catch%E3%81%AE%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8A%E8%87%AA%E7%94%B1%E3%81%AB%E6%8E%A8%E5%AE%9A)   
     -   [2-2. シナリオ2：nを推定させる,alpha=1,
-        beta=1と制約を置く](#シナリオ2nを推定させるalpha1-beta1と制約を置く)   
+        beta=1と制約を置く](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-2-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA2n%E3%82%92%E6%8E%A8%E5%AE%9A%E3%81%95%E3%81%9B%E3%82%8Balpha1-beta1%E3%81%A8%E5%88%B6%E7%B4%84%E3%82%92%E7%BD%AE%E3%81%8F)   
     -   [2-3.
-        シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](#シナリオ3schaefer型n2biomassとfの過程誤差ありindexの観測誤差ありcの観測誤差なし)
+        シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-3-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA3schaefer%E5%9E%8Bn2biomass%E3%81%A8f%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Aindex%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Ac%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%AA%E3%81%97)
 -   [3. Residuls and diagnostics
-        残差診断のやり方例](#residuls-and-diagnostics-残差診断のやり方例)
+        残差診断のやり方例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#3-residuls-and-diagnostics--%E6%AE%8B%E5%B7%AE%E8%A8%BA%E6%96%AD%E3%81%AE%E3%82%84%E3%82%8A%E6%96%B9%E4%BE%8B)
 -   [4. Retrospective plots
-        レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
+        レトロ解析のやり方例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#4-retrospective-plots-%E3%83%AC%E3%83%88%E3%83%AD%E8%A7%A3%E6%9E%90%E3%81%AE%E3%82%84%E3%82%8A%E6%96%B9%E4%BE%8B)
 -   [5. Robust estimation
-        外れ値の影響の緩和の例](#robust-estimation-外れ値の影響の緩和の例)
+        外れ値の影響の緩和の例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#5-robust-estimation-%E5%A4%96%E3%82%8C%E5%80%A4%E3%81%AE%E5%BD%B1%E9%9F%BF%E3%81%AE%E7%B7%A9%E5%92%8C%E3%81%AE%E4%BE%8B)
 -   [6. Forecasting
-        将来予測のやり方例](#forecasting-将来予測のやり方例)
--   [7. Management 管理 　　](#management-管理)  
--   
+        将来予測のやり方例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#6-forecasting-%E5%B0%86%E6%9D%A5%E4%BA%88%E6%B8%AC%E3%81%AE%E3%82%84%E3%82%8A%E6%96%B9%E4%BE%8B)
+-   [7. Management 管理 　　](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-management-%E7%AE%A1%E7%90%86-)  
+  -   [7-1.評価と管理の間の期間の指定](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-1-%E8%A9%95%E4%BE%A1%E3%81%A8%E7%AE%A1%E7%90%86%E3%81%AE%E9%96%93%E3%81%AE%E6%9C%9F%E9%96%93%E3%81%AE%E6%8C%87%E5%AE%9A)   
+    - [7-2. 自分でつくった管理方策を適用する場合](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-2-%E8%87%AA%E5%88%86%E3%81%A7%E3%81%A4%E3%81%8F%E3%81%A3%E3%81%9F%E7%AE%A1%E7%90%86%E6%96%B9%E7%AD%96%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88)   
+   
 ### 詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
 # 1．準備
 -------
