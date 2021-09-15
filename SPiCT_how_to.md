@@ -1,23 +1,22 @@
 -   [1．準備](#準備)
 -   [2. test\_data(ここではHake)の解析](#test_dataここではhakeの解析)
--   [以下は季節性データを使用しない場合の例です　](#以下は季節性データを使用しない場合の例です)
-    -   [2-1.
-        シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)
+ -   [以下は季節性データを使用しない場合の例です　](#以下は季節性データを使用しない場合の例です)   
+    -   [2-1.シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)   
     -   [2-2. シナリオ2：nを推定させる,alpha=1,
-        beta=1と制約を置く](#シナリオ2nを推定させるalpha1-beta1と制約を置く)
+        beta=1と制約を置く](#シナリオ2nを推定させるalpha1-beta1と制約を置く)   
     -   [2-3.
         シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](#シナリオ3schaefer型n2biomassとfの過程誤差ありindexの観測誤差ありcの観測誤差なし)
-    -   [3. Residuls and diagnostics
+-   [3. Residuls and diagnostics
         残差診断のやり方例](#residuls-and-diagnostics-残差診断のやり方例)
-    -   [4. Retrospective plots
+-   [4. Retrospective plots
         レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
-    -   [5. Robust estimation
+-   [5. Robust estimation
         外れ値の影響の緩和の例](#robust-estimation-外れ値の影響の緩和の例)
-    -   [6. Forecasting
+-   [6. Forecasting
         将来予測のやり方例](#forecasting-将来予測のやり方例)
-    -   [7. Management 管理 　　](#management-管理)
+-   [7. Management 管理 　　](#management-管理)
 
-1．準備
+# 1．準備
 -------
 
 ``` r
@@ -37,7 +36,7 @@ test_data<-read.csv("example.csv") #example.csvの形式に従い，データを
 test_data<-as.list(test_data) #リスト形式に変換　
 ```
 
-2. test\_data(ここではHake)の解析
+# 2. test\_data(ここではHake)の解析
 ---------------------------------
 
 ``` r
@@ -58,7 +57,7 @@ inp$dtc #time-intervalの指定．特に指定しない場合は，データの�
 以下は季節性データを使用しない場合の例です　
 ============================================
 
-2-1. シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）
+## 2-1. シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）
 ----------------------------------------------------------------------------------------------------
 
 ``` r
@@ -147,7 +146,7 @@ plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_fit2-2.png" width="80%" />
 
-2-2. シナリオ2：nを推定させる,alpha=1, beta=1と制約を置く
+## 2-2. シナリオ2：nを推定させる,alpha=1, beta=1と制約を置く
 ---------------------------------------------------------
 
 ``` r
@@ -231,7 +230,7 @@ plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_plot3-2.png" width="80%" />
 
-2-3. シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし
+## 2-3. シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし
 ----------------------------------------------------------------------------------------------
 
 ``` r
@@ -314,7 +313,9 @@ plotspict.priors(res_hake)#shape parameter(n)とalpha,betaの事前分布と事�
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_fit1-2.png" width="80%" />
 
-3. Residuls and diagnostics 残差診断のやり方例
+ 
+
+# 3. Residuls and diagnostics  残差診断のやり方例
 ----------------------------------------------
 
 ``` r
@@ -324,8 +325,9 @@ plotspict.diagnostic(res)
 ```
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_residual-1.png" width="80%" />
+  
 
-4. Retrospective plots レトロ解析のやり方例
+# 4. Retrospective plots レトロ解析のやり方例
 -------------------------------------------
 
 ``` r
@@ -351,8 +353,9 @@ mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
 
           FFmsy       BBmsy 
      0.01771116 -0.01836890 
+  
 
-5. Robust estimation 外れ値の影響の緩和の例
+# 5. Robust estimation 外れ値の影響の緩和の例
 -------------------------------------------
 
 ``` r
@@ -395,7 +398,7 @@ inp <- test_data
  #inp$ini$robfac <-15 
 ```
 
-6. Forecasting 将来予測のやり方例
+# 6. Forecasting 将来予測のやり方例  
 ---------------------------------
 
 ``` r
@@ -479,18 +482,20 @@ inp <- test_data
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_forecast-1.png" width="80%" />
 
-7. Management 管理 　　
+# 7. Management 管理 　　
 -----------------------
 
 　上記の方法でも将来予測出来るが，SPiCTにはデフォルトで8種類の管理方策が備わっている．  
-　1. currentCatch: 最終年の漁獲量を続ける 　2. currentF:
-最終年のFを用いる 　3. Fmsy: Fmsyで漁獲  
-　4. noF No fishing: 現在のFの1％まで減らす  
-　5. reduceF25: Fを25%減らす  
-　6. increaseF25: Fを25%増やす  
-　7. msyHockeyStick: ICESのMSYのH-S ruleを適用 　8. ices: ICES
-MSY35番目のH-S advice rule使う  
-?manageと検索すると色々と詳しい説明が出てくる
+1. currentCatch: 最終年の漁獲量を続ける 　  
+2. currentF:最終年のFを用いる  
+3. Fmsy: Fmsyで漁獲    
+4. noF No fishing: 現在のFの1％まで減らす    
+5. reduceF25: Fを25%減らす    
+6. increaseF25: Fを25%増やす   
+7. msyHockeyStick: ICESのMSYのH-S ruleを適用  
+8. ices: ICES MSY35番目のH-S advice rule使う    
+ 
+ - ?manageと検索すると色々と詳しい説明が出てくる
 
 ``` r
  inp <- test_data
@@ -535,8 +540,10 @@ MSY35番目のH-S advice rule使う
 ```
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_management-2.png" width="80%" />
+  
+    
 
-\#\#7-1. 評価と管理の間の期間の指定
+## 7-1. 評価と管理の間の期間の指定
 
 ``` r
  man.timeline(inp) #観察事象の年代と将来予測（管理）の年代の表示
@@ -602,9 +609,11 @@ MSY35番目のH-S advice rule使う
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_inter-2.png" width="80%" />
 
-　 \#\# 7-2. 自分でつくった管理方策を適用する場合
-add.man.scenarioの引数で大事なもの： ffac: 現在のFの何倍にするのかを指定
-cfac: 現在のCの何倍にするのかを指定　 breakpointBBmsy: H-S
+## 7-2. 自分でつくった管理方策を適用する場合
+add.man.scenarioの引数で大事なもの：  
+ - ffac: 現在のFの何倍にするのかを指定  
+ - cfac: 現在のCの何倍にするのかを指定　 
+ - breakpointBBmsy: H-S
 HCRの場合のB/Bmsyの折れ点の位置．デフォルトでは折れ点なし
 などなど（詳細はhandbook p51参照）
 
