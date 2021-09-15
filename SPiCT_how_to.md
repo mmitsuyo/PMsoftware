@@ -16,7 +16,7 @@
         将来予測のやり方例](#forecasting-将来予測のやり方例)
 -   [7. Management 管理 　　](#management-管理)  
 -   
-# 詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
+### 詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
 # 1．準備
 -------
 
