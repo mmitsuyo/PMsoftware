@@ -14,13 +14,14 @@
         外れ値の影響の緩和の例](#robust-estimation-外れ値の影響の緩和の例)
 -   [6. Forecasting
         将来予測のやり方例](#forecasting-将来予測のやり方例)
--   [7. Management 管理 　　](#management-管理)
-
+-   [7. Management 管理 　　](#management-管理)  
+-   
+# 詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
 # 1．準備
 -------
 
 ``` r
-#詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
+
 
 devtools::install_github("DTUAqua/spict/spict") #パッケージのインストール
 ```
