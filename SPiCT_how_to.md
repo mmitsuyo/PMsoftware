@@ -7,15 +7,16 @@
         beta=1と制約を置く](#シナリオ2nを推定させるalpha1-beta1と制約を置く)
     -   [2-3.
         シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](#シナリオ3schaefer型n2biomassとfの過程誤差ありindexの観測誤差ありcの観測誤差なし)
--   [3. Residuls and diagnostics
-    残差診断のやり方例](#residuls-and-diagnostics-残差診断のやり方例)
--   [4. Retrospective plots
-    レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
--   [5. Robust estimation
-    外れ値の影響の緩和の例](#robust-estimation-外れ値の影響の緩和の例)
--   [6. Forecasting 将来予測のやり方例](#forecasting-将来予測のやり方例)
--   [7. Management 管理 　　](#management-管理)
-    -   [7-1. 評価と管理の間の期間の指定](#評価と管理の間の期間の指定)
+    -   [3．Residuls and diagnostics
+        残差診断のやり方例](#residuls-and-diagnostics-残差診断のやり方例)
+    -   [4．Retrospective plots
+        レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
+    -   [5．Robust estimation
+        外れ値の影響の緩和の例](#robust-estimation-外れ値の影響の緩和の例)
+    -   [6．Forecasting
+        将来予測のやり方例](#forecasting-将来予測のやり方例)
+    -   [7．Management 管理](#management-管理)
+    -   [7-1．評価と管理の間の期間の指定](#評価と管理の間の期間の指定)
 
 1．準備
 -------
@@ -338,8 +339,8 @@ plotspict.priors(res_hake)#shape parameter(n)とalpha,betaの事前分布と事�
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_fit1-2.png" width="80%" />
 
-3. Residuls and diagnostics 残差診断のやり方例
-==============================================
+3．Residuls and diagnostics 残差診断のやり方例
+----------------------------------------------
 
 ``` r
 #シナリオ3の結果を例に
@@ -349,8 +350,8 @@ plotspict.diagnostic(res)
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_residual-1.png" width="80%" />
 
-4. Retrospective plots レトロ解析のやり方例
-===========================================
+4．Retrospective plots レトロ解析のやり方例
+-------------------------------------------
 
 ``` r
 #シナリオ3の結果を例に
@@ -376,8 +377,8 @@ mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
           FFmsy       BBmsy 
      0.01771116 -0.01836890 
 
-5. Robust estimation 外れ値の影響の緩和の例
-===========================================
+5．Robust estimation 外れ値の影響の緩和の例
+-------------------------------------------
 
 ``` r
 inp <- test_data
@@ -419,8 +420,8 @@ inp <- test_data
  #inp$ini$robfac <-15 
 ```
 
-6. Forecasting 将来予測のやり方例
-=================================
+6．Forecasting 将来予測のやり方例
+---------------------------------
 
 ``` r
 inp <- test_data
@@ -503,18 +504,20 @@ inp <- test_data
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_forecast-1.png" width="80%" />
 
-7. Management 管理 　　
-=======================
+7．Management 管理
+------------------
 
-上記の方法でも将来予測出来るが，SPiCTにはデフォルトで8種類の管理方策が備わっている．  
-　1. currentCatch: 最終年の漁獲量を続ける 　2. currentF:
-最終年のFを用いる 　3. Fmsy: Fmsyで漁獲  
-　4. noF No fishing: 現在のFの1％まで減らす  
-　5. reduceF25: Fを25%減らす  
-　6. increaseF25: Fを25%増やす  
-　7. msyHockeyStick: ICESのMSYのH-S ruleを適用 　8. ices: ICES
-MSY35番目のH-S advice rule使う  
-- ?manageと検索すると色々と詳しい説明が出てくる
+　上記の方法でも将来予測出来るが，SPiCTにはデフォルトで8種類の管理方策が備わっている．  
+1. currentCatch: 最終年の漁獲量を続ける 　  
+2. currentF:最終年のFを用いる  
+3. Fmsy: Fmsyで漁獲  
+4. noF No fishing: 現在のFの1％まで減らす  
+5. reduceF25: Fを25%減らす  
+6. increaseF25: Fを25%増やす  
+7. msyHockeyStick: ICESのMSYのH-S ruleを適用  
+8. ices: ICES MSY35番目のH-S advice rule使う
+
+-   ?manageと検索すると色々と詳しい説明が出てくる
 
 ``` r
  inp <- test_data
@@ -560,7 +563,7 @@ MSY35番目のH-S advice rule使う
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_management-2.png" width="80%" />
 
-7-1. 評価と管理の間の期間の指定
+7-1．評価と管理の間の期間の指定
 -------------------------------
 
 ``` r
