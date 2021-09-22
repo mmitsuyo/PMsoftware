@@ -1,48 +1,71 @@
--   [1．準備](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#1%E6%BA%96%E5%82%99)
--   [2. test\_data(ここではHake)の解析](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-test_data%E3%81%93%E3%81%93%E3%81%A7%E3%81%AFhake%E3%81%AE%E8%A7%A3%E6%9E%90)
-    -   [2-1.シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-1-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA1schaefer%E5%9E%8Bn2biomass%E3%81%A8f%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Aindex%E3%81%A8catch%E3%81%AE%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8A%E8%87%AA%E7%94%B1%E3%81%AB%E6%8E%A8%E5%AE%9A)   
+-   [1．準備](#準備)
+-   [2. test\_data(ここではHake)の解析](#test_dataここではhakeの解析)
+-   [以下は季節性データを使用しない場合の例です　](#以下は季節性データを使用しない場合の例です)
+    -   [2-1.
+        シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)
     -   [2-2. シナリオ2：nを推定させる,alpha=1,
-        beta=1と制約を置く](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-2-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA2n%E3%82%92%E6%8E%A8%E5%AE%9A%E3%81%95%E3%81%9B%E3%82%8Balpha1-beta1%E3%81%A8%E5%88%B6%E7%B4%84%E3%82%92%E7%BD%AE%E3%81%8F)   
+        beta=1と制約を置く](#シナリオ2nを推定させるalpha1-beta1と制約を置く)
     -   [2-3.
-        シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#2-3-%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA3schaefer%E5%9E%8Bn2biomass%E3%81%A8f%E3%81%AE%E9%81%8E%E7%A8%8B%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Aindex%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%82%E3%82%8Ac%E3%81%AE%E8%A6%B3%E6%B8%AC%E8%AA%A4%E5%B7%AE%E3%81%AA%E3%81%97)
+        シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし](#シナリオ3schaefer型n2biomassとfの過程誤差ありindexの観測誤差ありcの観測誤差なし)
 -   [3. Residuls and diagnostics
-        残差診断のやり方例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#3-residuls-and-diagnostics--%E6%AE%8B%E5%B7%AE%E8%A8%BA%E6%96%AD%E3%81%AE%E3%82%84%E3%82%8A%E6%96%B9%E4%BE%8B)
+    残差診断のやり方例](#residuls-and-diagnostics-残差診断のやり方例)
 -   [4. Retrospective plots
-        レトロ解析のやり方例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#4-retrospective-plots-%E3%83%AC%E3%83%88%E3%83%AD%E8%A7%A3%E6%9E%90%E3%81%AE%E3%82%84%E3%82%8A%E6%96%B9%E4%BE%8B)
+    レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
 -   [5. Robust estimation
-        外れ値の影響の緩和の例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#5-robust-estimation-%E5%A4%96%E3%82%8C%E5%80%A4%E3%81%AE%E5%BD%B1%E9%9F%BF%E3%81%AE%E7%B7%A9%E5%92%8C%E3%81%AE%E4%BE%8B)
--   [6. Forecasting
-        将来予測のやり方例](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#6-forecasting-%E5%B0%86%E6%9D%A5%E4%BA%88%E6%B8%AC%E3%81%AE%E3%82%84%E3%82%8A%E6%96%B9%E4%BE%8B)
--   [7. Management 管理 　　](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-management-%E7%AE%A1%E7%90%86-)  
-    -   [7-1.評価と管理の間の期間の指定](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-1-%E8%A9%95%E4%BE%A1%E3%81%A8%E7%AE%A1%E7%90%86%E3%81%AE%E9%96%93%E3%81%AE%E6%9C%9F%E9%96%93%E3%81%AE%E6%8C%87%E5%AE%9A)     
-    -   [7-2. 自分でつくった管理方策を適用する場合](https://github.com/mmitsuyo/PMsoftware/blob/master/SPiCT_how_to.md#7-2-%E8%87%AA%E5%88%86%E3%81%A7%E3%81%A4%E3%81%8F%E3%81%A3%E3%81%9F%E7%AE%A1%E7%90%86%E6%96%B9%E7%AD%96%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88)   
-   
-### 詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
-# 1．準備
+    外れ値の影響の緩和の例](#robust-estimation-外れ値の影響の緩和の例)
+-   [6. Forecasting 将来予測のやり方例](#forecasting-将来予測のやり方例)
+-   [7. Management 管理 　　](#management-管理)
+    -   [7-1. 評価と管理の間の期間の指定](#評価と管理の間の期間の指定)
+
+1．準備
 -------
 
 ``` r
+#詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
 
+#devtools::install_github("DTUAqua/spict/spict") #パッケージのインストール
 
-devtools::install_github("DTUAqua/spict/spict") #パッケージのインストール
-```
-
-    Error in get(genname, envir = envir) : 
-       オブジェクト 'testthat_print' がありません 
-
-``` r
 library(spict)#ライブラリーの読み込み  
 
 #1-1　データの読み込み  
-test_data<-read.csv("example.csv") #example.csvの形式に従い，データを作成してください
+#-------------------------------------------------
+#共通の例データ(example1.csv)をSPiCT用のデータ形式に変換するコード
+library(dplyr)
+library(tidyr)
+
+data<-read.csv("example1.csv")
+
+#
+data_noCV<-data %>% select(-CV) #indexのCVの値は直接は使わないのでここでは省くが，guidelineに記載があるように，logsdiの事前分布として指定することもできる．そのときはlogalphaやlogbetaの事前分布の指定は取り除く
+use_data<-spread(data_noCV,key=Fleet,value=Value)
+
+get_C<- use_data %>% filter(Label=="Catch")
+C_data <- get_C %>% select(Year,All)
+colnames(C_data)<-c("timeC","obsC")
+
+get_I<- use_data %>% filter(Label=="Index")
+I_data <- get_I %>% select(Year,Longline,PurseSeine)
+colnames(I_data)<-c("timeI","obsI","obsI2")
+
+test_data<-cbind(C_data,I_data)
 test_data<-as.list(test_data) #リスト形式に変換　
+
+#--------------------------------------------------
+#使用したい資源量指標値が一つの場合
+#test_data$obsIとして用いたい指標値を指定する
+
+#Fitする資源量指標値が二つの場合
+#test_data$obsI<-list()
+#test_data$obsI[[1]]<-test_data$obsI
+#test_data$obsI[[2]]<-test_data$obsI2　
 ```
 
-# 2. test\_data(ここではHake)の解析
+2. test\_data(ここではHake)の解析
 ---------------------------------
 
 ``` r
 #2-1.　Catchと資源量指標値データのプロット  
+test_data<-pol$hake
 plotspict.data(test_data)
 ```
 
@@ -59,7 +82,7 @@ inp$dtc #time-intervalの指定．特に指定しない場合は，データの�
 以下は季節性データを使用しない場合の例です　
 ============================================
 
-## 2-1. シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）
+2-1. シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）
 ----------------------------------------------------------------------------------------------------
 
 ``` r
@@ -148,7 +171,7 @@ plotspict.priors(res_hake2)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_fit2-2.png" width="80%" />
 
-## 2-2. シナリオ2：nを推定させる,alpha=1, beta=1と制約を置く
+2-2. シナリオ2：nを推定させる,alpha=1, beta=1と制約を置く
 ---------------------------------------------------------
 
 ``` r
@@ -232,7 +255,7 @@ plotspict.priors(res_hake3)#shape parameter(n)とalpha,betaの事前分布と事
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_plot3-2.png" width="80%" />
 
-## 2-3. シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし
+2-3. シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし
 ----------------------------------------------------------------------------------------------
 
 ``` r
@@ -315,10 +338,8 @@ plotspict.priors(res_hake)#shape parameter(n)とalpha,betaの事前分布と事�
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_fit1-2.png" width="80%" />
 
- 
-
-# 3. Residuls and diagnostics  残差診断のやり方例
-----------------------------------------------
+3. Residuls and diagnostics 残差診断のやり方例
+==============================================
 
 ``` r
 #シナリオ3の結果を例に
@@ -327,10 +348,9 @@ plotspict.diagnostic(res)
 ```
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_residual-1.png" width="80%" />
-  
 
-# 4. Retrospective plots レトロ解析のやり方例
--------------------------------------------
+4. Retrospective plots レトロ解析のやり方例
+===========================================
 
 ``` r
 #シナリオ3の結果を例に
@@ -355,10 +375,9 @@ mohns_rho(res,what=c("FFmsy","BBmsy")) #モーンズローの値
 
           FFmsy       BBmsy 
      0.01771116 -0.01836890 
-  
 
-# 5. Robust estimation 外れ値の影響の緩和の例
--------------------------------------------
+5. Robust estimation 外れ値の影響の緩和の例
+===========================================
 
 ``` r
 inp <- test_data
@@ -400,8 +419,8 @@ inp <- test_data
  #inp$ini$robfac <-15 
 ```
 
-# 6. Forecasting 将来予測のやり方例  
----------------------------------
+6. Forecasting 将来予測のやり方例
+=================================
 
 ``` r
 inp <- test_data
@@ -484,20 +503,18 @@ inp <- test_data
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_forecast-1.png" width="80%" />
 
-# 7. Management 管理 　　
------------------------
+7. Management 管理 　　
+=======================
 
-　上記の方法でも将来予測出来るが，SPiCTにはデフォルトで8種類の管理方策が備わっている．  
-1. currentCatch: 最終年の漁獲量を続ける 　  
-2. currentF:最終年のFを用いる  
-3. Fmsy: Fmsyで漁獲    
-4. noF No fishing: 現在のFの1％まで減らす    
-5. reduceF25: Fを25%減らす    
-6. increaseF25: Fを25%増やす   
-7. msyHockeyStick: ICESのMSYのH-S ruleを適用  
-8. ices: ICES MSY35番目のH-S advice rule使う    
- 
- - ?manageと検索すると色々と詳しい説明が出てくる
+上記の方法でも将来予測出来るが，SPiCTにはデフォルトで8種類の管理方策が備わっている．  
+　1. currentCatch: 最終年の漁獲量を続ける 　2. currentF:
+最終年のFを用いる 　3. Fmsy: Fmsyで漁獲  
+　4. noF No fishing: 現在のFの1％まで減らす  
+　5. reduceF25: Fを25%減らす  
+　6. increaseF25: Fを25%増やす  
+　7. msyHockeyStick: ICESのMSYのH-S ruleを適用 　8. ices: ICES
+MSY35番目のH-S advice rule使う  
+- ?manageと検索すると色々と詳しい説明が出てくる
 
 ``` r
  inp <- test_data
@@ -542,10 +559,9 @@ inp <- test_data
 ```
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_management-2.png" width="80%" />
-  
-    
 
-## 7-1. 評価と管理の間の期間の指定
+7-1. 評価と管理の間の期間の指定
+-------------------------------
 
 ``` r
  man.timeline(inp) #観察事象の年代と将来予測（管理）の年代の表示
@@ -611,11 +627,9 @@ inp <- test_data
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_inter-2.png" width="80%" />
 
-## 7-2. 自分でつくった管理方策を適用する場合
-add.man.scenarioの引数で大事なもの：  
- - ffac: 現在のFの何倍にするのかを指定  
- - cfac: 現在のCの何倍にするのかを指定　 
- - breakpointBBmsy: H-S
+　 \#\# 7-2. 自分でつくった管理方策を適用する場合
+add.man.scenarioの引数で大事なもの： ffac: 現在のFの何倍にするのかを指定
+cfac: 現在のCの何倍にするのかを指定　 breakpointBBmsy: H-S
 HCRの場合のB/Bmsyの折れ点の位置．デフォルトでは折れ点なし
 などなど（詳細はhandbook p51参照）
 
