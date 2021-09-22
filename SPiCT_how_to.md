@@ -1,5 +1,5 @@
 -   [1．準備](#準備)
--   [2. test\_data(ここではHake)の解析](#test_dataここではhakeの解析)
+-   [2． test\_data(ここではHake)の解析](#test_dataここではhakeの解析)
 -   [以下は季節性データを使用しない場合の例です　](#以下は季節性データを使用しない場合の例です)
     -   [2-1.
         シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（自由に推定）](#シナリオ1schaefer型n2biomassとfの過程誤差ありindexとcatchのの観測誤差あり自由に推定)
@@ -17,6 +17,7 @@
         将来予測のやり方例](#forecasting-将来予測のやり方例)
     -   [7．Management 管理](#management-管理)
     -   [7-1．評価と管理の間の期間の指定](#評価と管理の間の期間の指定)
+    -   [7-2．自分でつくった管理方策を適用する場合](#自分でつくった管理方策を適用する場合)
 
 1．準備
 -------
@@ -61,11 +62,11 @@ test_data<-as.list(test_data) #リスト形式に変換　
 #test_data$obsI[[2]]<-test_data$obsI2　
 ```
 
-2. test\_data(ここではHake)の解析
----------------------------------
+2． test\_data(ここではHake)の解析
+----------------------------------
 
 ``` r
-#2-1.　Catchと資源量指標値データのプロット  
+# 2-1.　Catchと資源量指標値データのプロット  
 test_data<-pol$hake
 plotspict.data(test_data)
 ```
@@ -630,9 +631,12 @@ inp <- test_data
 
 <img src="SPiCT_how_to_files/figure-markdown_github/hake_inter-2.png" width="80%" />
 
-　 \#\# 7-2. 自分でつくった管理方策を適用する場合
-add.man.scenarioの引数で大事なもの： ffac: 現在のFの何倍にするのかを指定
-cfac: 現在のCの何倍にするのかを指定　 breakpointBBmsy: H-S
+7-2．自分でつくった管理方策を適用する場合
+-----------------------------------------
+
+add.man.scenarioの引数で大事なもの：  
+- ffac: 現在のFの何倍にするのかを指定  
+- cfac: 現在のCの何倍にするのかを指定　 - breakpointBBmsy: H-S
 HCRの場合のB/Bmsyの折れ点の位置．デフォルトでは折れ点なし
 などなど（詳細はhandbook p51参照）
 
