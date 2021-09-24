@@ -18,6 +18,7 @@
     -   [7．Management 管理](#management-管理)
     -   [7-1．評価と管理の間の期間の指定](#評価と管理の間の期間の指定)
     -   [7-2．自分でつくった管理方策を適用する場合](#自分でつくった管理方策を適用する場合)
+    -   [8．事前分布の固定の仕方](#事前分布の固定の仕方)
 
 1．準備
 -------
@@ -47,19 +48,35 @@ colnames(C_data)<-c("timeC","obsC")
 
 get_I<- use_data %>% filter(Label=="Index")
 I_data <- get_I %>% select(Year,Longline,PurseSeine)
-colnames(I_data)<-c("timeI","obsI","obsI2")
+colnames(I_data)<-c("timeI1","obsI1","obsI2")
 
 test_data<-cbind(C_data,I_data)
 test_data<-as.list(test_data) #リスト形式に変換　
 
-#--------------------------------------------------
-#使用したい資源量指標値が一つの場合
-#test_data$obsIとして用いたい指標値を指定する
+#各資源量指標値のCVの抽出
+ LL<- data %>% select(Year,Fleet,CV) %>% filter(Fleet=="Longline")
+ PS<- data %>% select(Year,Fleet,CV) %>% filter(Fleet=="PurseSeine")
+ obsI1_CV<-LL$CV[[1]] #LonglineのCV
+ obsI2_CV<-PS$CV[[1]] #PurseSeineのCV
+ 
 
-#Fitする資源量指標値が二つの場合
-#test_data$obsI<-list()
-#test_data$obsI[[1]]<-test_data$obsI
-#test_data$obsI[[2]]<-test_data$obsI2　
+#-------------------------------------------------
+#用いたい資源量指標値の数によって以下の設定を各自行ってください．
+
+#使用したい資源量指標値が一つの場合----
+##用いたい指標値とそれに対応するtimeを以下のようにして指定する
+
+#test_data$obsI<-test_data$obsI1 #obsI1ほうを用いる場合
+test_data$obsI<-test_data$obsI2 #obsI2のほうを用いる場合
+test_data$timeI<-test_data$timeI1 #用いる資源量指標値に対応する時間軸を指定
+
+#Fitする資源量指標値が二つの場合----
+test_data$obsI<-list()
+test_data$obsI[[1]]<-test_data$obsI1
+test_data$obsI[[2]]<-test_data$obsI2
+test_data$timeI<-list()
+test_data$timeI[[1]]<-test_data$timeI1
+test_data$timeI[[2]]<-test_data$timeI1
 ```
 
 2． test\_data(ここではHake)の解析
@@ -673,4 +690,20 @@ HCRの場合のB/Bmsyの折れ点の位置．デフォルトでは折れ点な�
  names(repIntPer$man)
 ```
 
-    [1] "ices"             "customScenario_1" "reduced_catch"
+    [1] "ices"             "customScenario_1" "reduced_catch"   
+
+8．事前分布の固定の仕方
+-----------------------
+
+``` r
+ #例えば，資源量指標値のCVが既知でlogsdiを固定したい場合
+ inp <- test_data
+ sd_obsI<-mean(inp$obsI)*obsI2_CV #固定したい資源量指標値の平均値(この場合はobsIの例)*CVの値
+
+ inp$phases$logsdi <- -1 #固定するのでパラメータ推定のphaseを-1に指定
+ inp$ini$lodsdi <-log(sd_obsI) #固定したい値を指定
+ 
+ inp$priors$logalpha <- c(1,1,0) #この場合はlogsdiを指定したので，alphaに関して事前分布が指定されている場合にはこのように取り除く
+ 
+ res <- fit.spict(inp) #実行
+```
