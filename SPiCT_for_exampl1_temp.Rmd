@@ -1,0 +1,291 @@
+---
+title: "SPiCT_for_example1"
+author: "Mitsuyo Miyagawa"
+date: "`r Sys.Date()`"
+output: 
+  md_document:
+    toc: true
+    variant: markdown_github
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,
+                     cache=TRUE,
+               cache.lazy=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.width=10,
+               fig.height = 7.5, 
+               out.width='80%')
+```
+
+## 1．準備
+
+```{r read data}
+#詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
+
+#devtools::install_github("DTUAqua/spict/spict") #パッケージのインストール
+
+library(spict)#ライブラリーの読み込み  
+
+#1-1　データの読み込み  
+#-------------------------------------------------
+#共通の例データ(example1.csv)をSPiCT用のデータ形式に変換するコード
+library(dplyr)
+library(tidyr)
+
+data<-read.csv("example1.csv")
+
+#
+data_noCV<-data %>% select(-CV,-Weight,-Memo) #とりあえずCV,wight,memoの情報は取り除く
+use_data<-spread(data_noCV,key=Fleet,value=Value)
+
+get_C<- use_data %>% filter(Label=="Catch")
+C_data <- get_C %>% select(Year,All)
+colnames(C_data)<-c("timeC","obsC")
+
+get_I<- use_data %>% filter(Label=="Index")
+I_data <- get_I %>% select(Year,Longline,PurseSeine)
+colnames(I_data)<-c("timeI1","obsI1","obsI2")
+
+test_data<-cbind(C_data,I_data)
+test_data<-as.list(test_data) #リスト形式に変換　
+
+#各資源量指標値のCVの抽出
+ LL<- data %>% select(Year,Fleet,CV) %>% filter(Fleet=="Longline")
+ PS<- data %>% select(Year,Fleet,CV) %>% filter(Fleet=="PurseSeine")
+ obsI1_CV<-LL$CV[[1]] #LonglineのCV
+ obsI2_CV<-PS$CV[[1]] #PurseSeineのCV
+ 
+
+#-------------------------------------------------
+
+#Fitする資源量指標値が二つの場合----
+test_data$obsI<-list()
+test_data$obsI[[1]]<-test_data$obsI1
+test_data$obsI[[2]]<-test_data$obsI2
+test_data$timeI<-list()
+test_data$timeI[[1]]<-test_data$timeI1
+test_data$timeI[[2]]<-test_data$timeI1
+
+```
+
+## 2． test_data(ここではexample1.csv)の解析
+  
+```{r plot_C_I}
+# 2-1.　Catchと資源量指標値データのプロット  
+
+plotspict.data(test_data)
+
+```
+
+```{r setting}
+# 2-2.　time intervalの指定/確認  
+inp<-check.inp(test_data)
+inp$dtc #time-intervalの指定．特に指定しない場合は，データの最初の観察値を1とし，その次の観察値は1年後とみなされるのでtime-intervalは1となる.もし四半期のデータなら，inp$dtc<-0.25と指定する
+
+```
+  
+# 以下は季節性データを使用しない場合の例です　
+## 2-1. シナリオ1：Schaefer型(n=2),BiomassとFの過程誤差あり・IndexとCatchのの観測誤差あり（注：自由に推定させるケース）
+```{r fit2}
+ inp <- test_data
+
+ #shape parameterを固定したい場合は下記で定める
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+ #その他の過程誤差，観測誤差に関してはとりあえずデフォルトのゆるいpriorをあてて推定させてみる
+ #(どんなゆるいpriorをあてているかはsummaryを実行したときのPriorsというところに出てくる)
+ 
+ #実行するためのコマンド
+ res_example1<-fit.spict(inp)
+
+ #結果を要約する
+ summary(res_example1)
+
+ #ちなみに結果に表示されるr,rold,rcの中身は r = m⁄K nn⁄(n-1), rold = | m⁄K nn⁄(n-1)1⁄(n-1) |,rc = | m⁄K n1⁄(n-1) 2 |.必要なのはr
+
+```
+
+```{r hake_fit2}
+# plot results
+plot(res_example1) #全体的な結果のプロット
+plotspict.priors(res_example1)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+  
+## 2-2. シナリオ2：nを推定させる,alpha=1, beta=1と制約を置く 
+
+```{r fit3}
+
+ inp <- test_data
+
+ inp$priors$logbeta<-c(log(1),0.001^2) #betaに関するパラメータをfix. beta=1に固定
+ inp$priors$logalpha<-c(log(1),0.001^2) #alphaに関するパラメータをfix. alpha=1に固定
+ 
+ #inp$priors$logalpha<-c(1,1,0) #alphaに関するpriorをなくす場合の設定
+ #inp$priors$logbeta<-c(1,1,0)#betaに関するpriorをなくす場合の設定
+ 
+ res_example2<-fit.spict(inp)
+
+# summary of result
+ summary(res_example2)
+
+```
+
+```{r hake_plot3}
+# plot results
+plot(res_example2) #全体的な結果のプロット
+plotspict.priors(res_example2)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+## 2-3. シナリオ3：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差あり，Cの観測誤差なし
+```{r fit1}
+
+ inp <- test_data
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+
+ inp$priors$logsdc<-c(log(0.001),1e-3)#漁獲量に関する観察誤差をほぼなしと仮定するための設定
+ inp$priors$logbeta<-c(1,1,0)#betaに関するpriorはなくしておく
+ 
+ res_example3<-fit.spict(inp)
+
+# summary of result
+summary(res_example3)
+
+```
+
+```{r hake_fit1}
+# plot results
+plot(res_example3) #全体的な結果のプロット
+plotspict.priors(res_example3)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+
+## 2-4. シナリオ4：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差ほぼfixだけど狭いprior与える，Cの観測誤差推定
+```{r fit_cv}
+
+ inp <- test_data
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+#資源量指標値のCVが既知なのでlogsdiに狭いprior与える
+
+ sd_obsI1<-mean(inp$obsI[[1]],na.rm=TRUE)*obsI1_CV #固定したい資源量指標値の平均値(この場合はobsI[[1]]の例)*obsI1のCVの値
+ sd_obsI2<-mean(inp$obsI[[2]],na.rm=TRUE)*obsI2_CV #固定したい資源量指標値の平均値(この場合はobsI[[2]]の例)*obsI2のCVの値
+ 
+ inp$priors$logsdi<-list(c(log(sd_obsI1),1e-3,1),c(log(sd_obsI2),1e-3,1))#logsdi1とlogsdi2に狭い事前分布を与えて推定させる
+ inp$priors$logalpha<-c(1,1,0)#alphaに関するpriorはなくしておく
+ 
+ res_example5<-fit.spict(inp)
+
+# summary of result
+summary(res_example5)
+
+```
+
+```{r example_fit_cv}
+# plot results
+plot(res_example5) #全体的な結果のプロット
+plotspict.priors(res_example5)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+## 2-5. シナリオ5：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差ほぼfixだけど狭いprior与える，Cの観測誤差なし
+```{r fit_cv2}
+
+ inp <- test_data
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+#資源量指標値のCVが既知なのでlogsdiに狭いprior与える
+
+ sd_obsI1<-mean(inp$obsI[[1]],na.rm=TRUE)*obsI1_CV #固定したい資源量指標値の平均値(この場合はobsI[[1]]の例)*obsI1のCVの値
+ sd_obsI2<-mean(inp$obsI[[2]],na.rm=TRUE)*obsI2_CV #固定したい資源量指標値の平均値(この場合はobsI[[2]]の例)*obsI2のCVの値
+ 
+ inp$priors$logsdi<-list(c(log(sd_obsI1),1e-3,1),c(log(sd_obsI2),1e-3,1))#logsdi1とlogsdi2に狭い事前分布を与えて推定させる
+ inp$priors$logalpha<-c(1,1,0)#alphaに関するpriorはなくしておく
+ 
+ inp$priors$logsdc<-c(log(0.001),1e-3)#漁獲量に関する観察誤差をほぼなしと仮定するための設定
+ inp$priors$logbeta<-c(1,1,0)#betaに関するpriorはなくしておく
+ 
+ res_example6<-fit.spict(inp)
+
+# summary of result
+summary(res_example6)
+
+```
+
+```{r example_fit_cv2}
+# plot results
+plot(res_example6) #全体的な結果のプロット
+plotspict.priors(res_example6)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+## 2-6. シナリオ6：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差ほぼfixだけど狭いprior与える，Cの観測誤差なし,Initial statesもほぼ固定したら？
+```{r fit_cv3}
+
+ inp <- test_data
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+#資源量指標値のCVが既知なのでlogsdiに狭いprior与える
+
+ sd_obsI1<-mean(inp$obsI[[1]],na.rm=TRUE)*obsI1_CV #固定したい資源量指標値の平均値(この場合はobsI[[1]]の例)*obsI1のCVの値
+ sd_obsI2<-mean(inp$obsI[[2]],na.rm=TRUE)*obsI2_CV #固定したい資源量指標値の平均値(この場合はobsI[[2]]の例)*obsI2のCVの値
+ 
+ inp$priors$logsdi<-list(c(log(sd_obsI1),1e-3,1),c(log(sd_obsI2),1e-3,1))#logsdi1とlogsdi2に狭い事前分布を与えて推定させる
+ inp$priors$logalpha<-c(1,1,0)#alphaに関するpriorはなくしておく
+ 
+ inp$priors$logsdc<-c(log(0.001),1e-3)#漁獲量に関する観察誤差をほぼなしと仮定するための設定
+ inp$priors$logbeta<-c(1,1,0)#betaに関するpriorはなくしておく
+ 
+ inp$priors$logbkfrac<-c(log(0.8),1e-3)
+ 
+ res_example7<-fit.spict(inp)
+
+# summary of result
+summary(res_example7)
+
+```
+
+```{r example_fit_cv3}
+# plot results
+plot(res_example7) #全体的な結果のプロット
+plotspict.priors(res_example7)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
+
+## 2-7. シナリオ7：Schaefer型(n=2),BiomassとFの過程誤差あり，Indexの観測誤差ほぼfixだけど狭いprior与える，Cの観測誤差なし,Initial statesもほぼ固定, Biomassのprocess errorもほぼ固定したら？
+
+```{r fit_cv4}
+
+ inp <- test_data
+ inp$priors$logn<-c(log(2),1e-3) #shape parameter=2 Schaefer型にshape parameterを固定
+ 
+#資源量指標値のCVが既知なのでlogsdiに狭いprior与える
+
+ sd_obsI1<-mean(inp$obsI[[1]],na.rm=TRUE)*obsI1_CV #固定したい資源量指標値の平均値(この場合はobsI[[1]]の例)*obsI1のCVの値
+ sd_obsI2<-mean(inp$obsI[[2]],na.rm=TRUE)*obsI2_CV #固定したい資源量指標値の平均値(この場合はobsI[[2]]の例)*obsI2のCVの値
+ 
+ inp$priors$logsdi<-list(c(log(sd_obsI1),1e-3,1),c(log(sd_obsI2),1e-3,1))#logsdi1とlogsdi2に狭い事前分布を与えて推定させる
+  inp$priors$logalpha<-c(1,1,0)#alphaに関するpriorはなくしておく
+ inp$priors$logsdb<-c(log(0.3),1e-3)#sdbに関するprior
+ 
+ inp$priors$logsdc<-c(log(0.001),1e-3)#漁獲量に関する観察誤差をほぼなしと仮定するための設定
+ inp$priors$logbeta<-c(1,1,0)#betaに関するpriorはなくしておく
+ 
+ inp$priors$logbkfrac<-c(log(0.8),1e-3)
+ 
+ res_example8<-fit.spict(inp)
+
+# summary of result
+summary(res_example8)
+
+```
+
+```{r example_fit_cv4}
+# plot results
+plot(res_example8) #全体的な結果のプロット
+plotspict.priors(res_example8)#shape parameter(n)とalpha,betaの事前分布と事後分布
+```
