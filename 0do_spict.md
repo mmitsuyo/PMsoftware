@@ -1,6 +1,15 @@
 -   [1．Set parameters
     パラメータの設定](#set-parameters-パラメータの設定)
 -   [2．Read in data データの読み込み](#read-in-data-データの読み込み)
+-   [3．Apply data and pars for SPiCT
+    解析に用いるデータの指定とSPiCT用の変数に変換](#apply-data-and-pars-for-spict-解析に用いるデータの指定とspict用の変数に変換)
+-   [4．Plot input data
+    データのプロット](#plot-input-data-データのプロット)
+-   [5．Set time interval 時間幅の設定](#set-time-interval-時間幅の設定)
+-   [6．実行と結果の要約](#実行と結果の要約)
+-   [7．結果のプロットと推定パラメータの事前分布と事後分布図](#結果のプロットと推定パラメータの事前分布と事後分布図)
+-   [9．Retrospective plots
+    レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
 
 1．Set parameters パラメータの設定
 ==================================
@@ -113,11 +122,11 @@ test_data$timeI<-test_data$timeI1
 }
 ```
 
-\# 3．Apply data and pars for SPiCT
-解析に用いるデータの指定とSPiCT用の変数に変換
+3．Apply data and pars for SPiCT 解析に用いるデータの指定とSPiCT用の変数に変換
+==============================================================================
 
 ``` r
-inp <- test_data　#test_dataをinputデータとして与える．
+inp <- test_data #test_dataをinputデータとして与える．
 
 inp$priors$logr <- prior_r
 inp$priors$logn <- prior_shape
@@ -132,7 +141,8 @@ if(set_mapsdi==1) inp$mapsdi <- mapsdi
 inp$priors$logq <- prior_q
 ```
 
-\# 4．Plot input data データのプロット
+4．Plot input data データのプロット
+===================================
 
 ``` r
 plotspict.data(inp)
@@ -142,7 +152,8 @@ plotspict.data(inp)
 
 <img src="0do_spict_files/figure-markdown_github/plot_C_I-1.png" width="80%" />
 
-\# 5．Set time interval 時間幅の設定
+5．Set time interval 時間幅の設定
+=================================
 
 ``` r
 inp<-check.inp(inp)
@@ -156,7 +167,10 @@ inp$dtc #time-intervalの指定．特に指定しない場合は，データの�
 
      [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 
-　\# 6．実行と結果の要約 　
+6．実行と結果の要約
+===================
+
+　
 
 ``` r
  res<-fit.spict(inp)
@@ -228,7 +242,10 @@ inp$dtc #time-intervalの指定．特に指定しない場合は，データの�
  #ちなみに結果に表示されるr,rold,rcの中身は r = m⁄K nn⁄(n-1), rold = | m⁄K nn⁄(n-1)1⁄(n-1) |,rc = | m⁄K n1⁄(n-1) 2 |.必要なのはr
 ```
 
-　\# 7．結果のプロットと推定パラメータの事前分布と事後分布図 　
+7．結果のプロットと推定パラメータの事前分布と事後分布図
+=======================================================
+
+　
 
 ``` r
 plot(res) #全体的な結果のプロット
@@ -241,7 +258,7 @@ plotspict.priors(res)#事前分布と事後分布
 ```
 
 <img src="0do_spict_files/figure-markdown_github/var_plot-2.png" width="80%" /><img src="0do_spict_files/figure-markdown_github/var_plot-3.png" width="80%" />
-　\# 8．Residuls and diagnostics 残差診断のやり方例
+\# 8．Residuls and diagnostics 残差診断のやり方例
 
 ``` r
 res_resi<-calc.osa.resid(res)
@@ -250,7 +267,8 @@ plotspict.diagnostic(res_resi)
 
 <img src="0do_spict_files/figure-markdown_github/hake_residual-1.png" width="80%" />
 
-　\# 9．Retrospective plots レトロ解析のやり方例
+9．Retrospective plots レトロ解析のやり方例
+===========================================
 
 ``` r
 res_retro<-retro(res,nretroyear=5)
