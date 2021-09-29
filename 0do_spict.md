@@ -1,18 +1,15 @@
--   [1．Set parameters
-    パラメータの設定](#set-parameters-パラメータの設定)
--   [2．Read in data データの読み込み](#read-in-data-データの読み込み)
--   [3．Apply data and pars for SPiCT
-    解析に用いるデータの指定とSPiCT用の変数に変換](#apply-data-and-pars-for-spict-解析に用いるデータの指定とspict用の変数に変換)
--   [4．Plot input data
-    データのプロット](#plot-input-data-データのプロット)
--   [5．Set time interval 時間幅の設定](#set-time-interval-時間幅の設定)
+-   [1．パラメータの設定](#パラメータの設定)
+-   [2．データの読み込み](#データの読み込み)
+-   [3．解析に用いるデータの指定とSPiCT用の変数に変換](#解析に用いるデータの指定とspict用の変数に変換)
+-   [4．入力データのプロット](#入力データのプロット)
+-   [5．時間幅の設定](#時間幅の設定)
 -   [6．実行と結果の要約](#実行と結果の要約)
 -   [7．結果のプロットと推定パラメータの事前分布と事後分布図](#結果のプロットと推定パラメータの事前分布と事後分布図)
--   [9．Retrospective plots
-    レトロ解析のやり方例](#retrospective-plots-レトロ解析のやり方例)
+-   [8．残差診断](#残差診断)
+-   [9．レトロ解析](#レトロ解析)
 
-1．Set parameters パラメータの設定
-==================================
+1．パラメータの設定
+===================
 
 ``` r
 #詳しい説明はspict_guidelines.pdfやspict_handbook.pdfを参照してください
@@ -73,8 +70,8 @@ mapsdi <-c(1,1)
 prior_q <- c(log(0.8),2,0)
 ```
 
-2．Read in data データの読み込み
-================================
+2．データの読み込み
+===================
 
 ``` r
 #共通の例データ(example1.csv)をSPiCT用のデータ形式に変換するコード
@@ -122,8 +119,8 @@ test_data$timeI<-test_data$timeI1
 }
 ```
 
-3．Apply data and pars for SPiCT 解析に用いるデータの指定とSPiCT用の変数に変換
-==============================================================================
+3．解析に用いるデータの指定とSPiCT用の変数に変換
+================================================
 
 ``` r
 inp <- test_data #test_dataをinputデータとして与える．
@@ -141,8 +138,8 @@ if(set_mapsdi==1) inp$mapsdi <- mapsdi
 inp$priors$logq <- prior_q
 ```
 
-4．Plot input data データのプロット
-===================================
+4．入力データのプロット
+=======================
 
 ``` r
 plotspict.data(inp)
@@ -152,8 +149,8 @@ plotspict.data(inp)
 
 <img src="0do_spict_files/figure-markdown_github/plot_C_I-1.png" width="80%" />
 
-5．Set time interval 時間幅の設定
-=================================
+5．時間幅の設定
+===============
 
 ``` r
 inp<-check.inp(inp)
@@ -258,7 +255,9 @@ plotspict.priors(res)#事前分布と事後分布
 ```
 
 <img src="0do_spict_files/figure-markdown_github/var_plot-2.png" width="80%" /><img src="0do_spict_files/figure-markdown_github/var_plot-3.png" width="80%" />
-\# 8．Residuls and diagnostics 残差診断のやり方例
+
+8．残差診断
+===========
 
 ``` r
 res_resi<-calc.osa.resid(res)
@@ -267,8 +266,8 @@ plotspict.diagnostic(res_resi)
 
 <img src="0do_spict_files/figure-markdown_github/hake_residual-1.png" width="80%" />
 
-9．Retrospective plots レトロ解析のやり方例
-===========================================
+9．レトロ解析
+=============
 
 ``` r
 res_retro<-retro(res,nretroyear=5)
